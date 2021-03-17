@@ -1,0 +1,3 @@
+export const LOAD_CARS = 'LOAD_CARS'
+export const LOAD_MORE_CARS = 'LOAD_MORE_CARS'
+export const CHANGE_LOADING = 'CHANGE_LOADING'
