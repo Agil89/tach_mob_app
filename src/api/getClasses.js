@@ -4,5 +4,5 @@ export const getClasses = async () =>{
         headers:{'Content-Type': 'application/json'}
     })
     const data = await response.json()
-    return data.results
+    return data.classes
 }

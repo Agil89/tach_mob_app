@@ -1,23 +1,35 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import {Text,View,StyleSheet,TextInput,Button} from 'react-native'
 import {Picker} from '@react-native-community/picker'
 import { CheckBox } from 'react-native-elements'
 import { getFilteredCars } from '../api/getCars'
-import { useDispatch } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
+import { getModelsForMarka } from '../store/actions/filterDataAction'
 
 
 export const FilterScreen =({navigation}) =>{
+
+    const dispatch = useDispatch()
+
+
     const [isSelected,setSelection] = useState(false)
 
+    const classes = useSelector(state => state.filters.classes)
+    const markas = useSelector(state => state.filters.markas)
+    const models = useSelector(state => state.filters.models)
+
+    console.log(models)
 
 
-    const [isEcoSelected,setEcoSelection] = useState(false)
-    const [isComfSelected,setComfSelection] = useState(false)
-    const [isBusSelected,setBusSelection] = useState(false)
+
     const [isPicked,setPicked] = useState('Марка автомобиля')
     const [pickModel,setPickModel] = useState('Модель автомобиля')
     const [minText,setMinText] = useState(null)
     const [maxText,setMaxText] = useState(null)
+
+    useEffect(()=>{
+        dispatch(getModelsForMarka(isPicked))
+    },[isPicked])
 
     const selectHandle = () =>{
         if (isSelected){
@@ -55,27 +67,14 @@ export const FilterScreen =({navigation}) =>{
             <View style={styles.classContainer}>
                 <Text style={styles.classText}>По классу автомобиля :</Text>
                 <View style={styles.allClasses}>
+                {classes.map(carClass => (
                     <View style={styles.checkboxContainer}>
                         <CheckBox
-                        title='Эконом'
+                        title={carClass.name}
                         checked={isSelected}
                         onPress={selectHandle}
                         />
-                    </View>
-                    <View style={styles.checkboxContainer}>
-                        <CheckBox
-                        title='Комфорт'
-                        checked={isSelected}
-                        onPress={selectHandle}
-                        />
-                    </View>
-                    <View style={styles.checkboxContainer}>
-                        <CheckBox
-                        title='Бизнес'
-                        checked={isSelected}
-                        onPress={selectHandle}
-                        />
-                    </View>
+                    </View> ))}
                 </View>
             </View>
             <View>
@@ -85,10 +84,10 @@ export const FilterScreen =({navigation}) =>{
                 <Picker
                     selectedValue={isPicked}
                     style={{height: 50, width: '40%'}}
-                    onValueChange={(itemValue, itemIndex)=>setPicked(itemValue)}>
-                    <Picker.Item label="Kia" value="kia" />
-                    <Picker.Item label="Hyundai" value="hyundai" />
-                    <Picker.Item label="Skoda" value="skoda" />
+                    onValueChange={(itemValue, itemIndex)=>(
+                        setPicked(itemValue)
+                        )}>
+                    {markas.map(marka => <Picker.Item label={marka.marka} value={marka.id} />)}
                 </Picker>
                 </View>
                 <View style={styles.mm}>
@@ -97,9 +96,7 @@ export const FilterScreen =({navigation}) =>{
                     selectedValue={pickModel}
                     style={{height: 50, width: '40%'}}
                     onValueChange={(itemValue, itemIndex)=>setPickModel(itemValue)}>
-                    <Picker.Item label="Rio" value="rio" />
-                    <Picker.Item label="Optima" value="Optima" />
-                    <Picker.Item label="Carnaval" value="carnaval" />
+                        {models.map(model => <Picker.Item label={model.model} value={model.model} />)}
                 </Picker>
                 </View>
             </View>

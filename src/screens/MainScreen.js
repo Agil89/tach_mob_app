@@ -5,6 +5,7 @@ import {AppHeaderIcon} from '../components/AppHeaderIcon'
 import { HeaderButtons,Item } from 'react-navigation-header-buttons'
 import { useDispatch,useSelector } from 'react-redux'
 import { loadCars, loadCarsByPage, loadingHandler } from '../store/actions/carAction'
+import { getAllClasses, getAllMarkas } from '../store/actions/filterDataAction'
 
 
 export const MainScreen =(props) =>{
@@ -20,6 +21,8 @@ export const MainScreen =(props) =>{
     
     useEffect(() =>{
         dispatch(loadCars())
+        dispatch(getAllClasses())
+        dispatch(getAllMarkas())
     },[dispatch])
 
     useEffect(()=>{

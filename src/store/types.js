@@ -1,3 +1,6 @@
 export const LOAD_CARS = 'LOAD_CARS'
 export const LOAD_MORE_CARS = 'LOAD_MORE_CARS'
 export const CHANGE_LOADING = 'CHANGE_LOADING'
+export const GET_CLASSES = 'GET_CLASSES'
+export const GET_MARKAS = 'GET_MARKAS'
+export const GET_MODELS = 'GET_MODELS'
